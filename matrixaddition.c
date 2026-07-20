@@ -53,54 +53,76 @@ for(int i=0; i < m; i++){
        display(difference,m,n);
       }
       
-     void multiply(int arr1[10][10], int arr2[10][10],int m, int n){ 
+     void multiply(int arr1[10][10], int arr2[10][10],int m1, int n1, int m2, int n2){ 
      int product[10][10];
      
      printf("Multiplication of the two matrices: \n");
-     for (int i=0; i < m ; i++){
-         for(int j=0; j < n ; j ++){
+     for (int i=0; i < m1 ; i++){
+         for(int j=0; j < n2 ; j ++){
            product[i][j]=0;
-            for(int k=0 ; k<n ; k++){
+            for(int k=0 ; k<n1 ; k++){
                product[i][j]+=arr1[i][k]*arr2[k][j];
             }
            }
          }
-         display(product,m,n);
+         display(product,m1,n2);
         }
       
  int main(){
  printf("Main Function\n");
- int a[10][10], m,n, b[10][10];
- printf("Enter number of rows: ");
- scanf("%d",&m);
- printf("Enter number of columns: ");
- scanf("%d",&n);
+ int a[10][10], m1,n1,m2,n2, b[10][10];
+ printf("Enter number of rows of matrix 1: ");
+ scanf("%d",&m1);
+ printf("Enter number of columns of matrix 1: ");
+ scanf("%d",&n1);
+  printf("Enter number of rows of matrix 2: ");
+ scanf("%d",&m2);
+ printf("Enter number of columns of matrix 2: ");
+ scanf("%d",&n2);
  printf("Matrix 1: ");
-  accept(a,m,n);
-  display(a,m,n);
+  accept(a,m1,n1);
+  display(a,m1,n1);
   printf(" Matrix 2: ");
-  accept(b,m,n);
-  display(b,m,n);
+  accept(b,m2,n2);
+  display(b,m2,n2);
   
   int ch;
  while(1){ 
+    printf("\n");
     printf("1 for Addition\n");
     printf ("2 for Subtraction\n");
     printf("3 for Multiplication\n");
     printf("4 for Transpose\n");
     printf("5 for Exit\n");
     printf("Enter your choice: \n");
-   scanf("%d",&ch);
+    scanf("%d",&ch);
+    printf("\n");
+    
     switch(ch){
-         case 1: addition(a,b,m,n);
+      case 1: 
+         if(m1!=m2||n1!=n2){
+             printf("Addition not possible\n");
+         }else{
+         addition(a,b,m1,n1);
+         }
          break;
-         case 2: subtract(a,b,m,n);
+      case 2:
+         if(m1!=m2||n1!=n2){
+             printf("Subtraction not possible\n");
+         }else{
+         subtract(a,b,m1,n1);
+         }
          break;
-         case 3 : multiply(a,b,m,n);
+      case 3 :
+         if(n1!=m2){
+             printf("Multiplication not possible\n");
+         }else{
+         multiply(a,b,m1,n1,m2,n2);
+         }
          break;
-        case 4 : transpose(a,m,n);
+      case 4 : transpose(a,m1,n1);
         break;
-        case 5: exit(0);
+      case 5: exit(0);
   
         }
      }

@@ -111,7 +111,9 @@ void fast_transpose(int compact_form[10][10], int fast_t_matrix[10][10]){
 	
 }
 
-void compact_addition(int A[10],int B[10], int C[10]){
+void compact_addition(int A[10][10],int B[10][10], int C[10][10]){
+    int t1=A[0][2];
+    int t2=B[0][2];
 	if((A[0][0]==B[0][0]) && (A[0][1]==B[0][1])){
 		if((t1==0) && (t2==0)){
 			return;
@@ -148,7 +150,108 @@ void compact_addition(int A[10],int B[10], int C[10]){
 				j=j+1;
 			}
 		}else if(A[i][0]<B[j][0]){
-		
+		    C[k][0]=A[i][0];
+		    C[k][1]=A[i][1];
+		    C[k][2]=A[i][2];
+		    k=k+1;
+		    i=i+1;
+		}else if (A[i][0]>B[j][0]){
+		    C[k][0]=B[j][0];
+		    C[k][1]=B[j][1];
+		    C[k][2]=B[j][2];
+		    k=k+1;
+		    j=j+1;
+		}
+	}
+	while(i<=t1){
+	    C[k][0]=A[i][0];
+	    C[k][1]=A[i][1];
+	    C[k][2]=A[i][2];
+	    i++;
+	    k++;
+	}
+	while(j<=t2){
+	    C[k][0]=B[j][0];
+	    C[k][1]=B[j][1];
+	    C[k][2]=B[j][2];
+	    j++;
+	    k++;
+	}
+	C[0][2]=k-1;
+	printf("The sum of the matrices: \n");
+	display(C,k,3);
+}
+        
+void compact_subtraction(int A[10][10],int B[10][10], int C[10][10]){
+    int t1=A[0][2];
+    int t2=B[0][2];
+	if((A[0][0]==B[0][0]) && (A[0][1]==B[0][1])){
+		if((t1==0) && (t2==0)){
+			return;
+		}
+	}
+	C[0][0]=A[0][0];
+	C[0][1]=A[0][1];
+	
+	int i,j,k;
+	i=j=k=1;
+	while((i<=t1) && (j<=t2)){
+		if(A[i][0]==B[j][0]){
+			if(A[i][1]==B[j][1]){
+				int temp=A[i][2]-B[j][2];
+				if(temp!=0){
+					C[k][0]=A[i][0];
+					C[k][1]=A[i][1];
+					C[k][2]=temp;
+					k=k+1;
+				}
+				i=i+1;
+				j=j+1;
+			}else if(A[i][1]<B[j][1]){
+				C[k][0]=A[i][0];
+				C[k][1]=A[i][1];
+				C[k][2]=A[i][2];
+				k=k+1;
+				i=i+1;
+			}else if(A[i][1]>B[j][1]){
+				C[k][0]=B[j][0];
+				C[k][1]=B[j][1];
+				C[k][2]=-B[j][2];
+				k=k+1;
+				j=j+1;
+			}
+		}else if(A[i][0]<B[j][0]){
+		    C[k][0]=A[i][0];
+		    C[k][1]=A[i][1];
+		    C[k][2]=A[i][2];
+		    k=k+1;
+		    i=i+1;
+		}else if (A[i][0]>B[j][0]){
+		    C[k][0]=B[j][0];
+		    C[k][1]=B[j][1];
+		    C[k][2]=-B[j][2];
+		    k=k+1;
+		    j=j+1;
+		}
+	}
+	while(i<=t1){
+	    C[k][0]=A[i][0];
+	    C[k][1]=A[i][1];
+	    C[k][2]=A[i][2];
+	    i++;
+	    k++;
+	}
+	while(j<=t2){
+	    C[k][0]=B[j][0];
+	    C[k][1]=B[j][1];
+	    C[k][2]=-B[j][2];
+	    j++;
+	    k++;
+	}
+	C[0][2]=k-1;
+	printf("The difference of the matrices: \n");
+	display(C,k,3);
+}
 	
 	
 	
@@ -160,10 +263,14 @@ int main(){
     	 int simple_transposed_matrix[10][10];
     	 int fast_transposed_matrix[10][10];
     	 int m,n;
+    	 int A[10][10], B[10][10],sum[10][10],difference[10][10];
     	 printf("Enter the number of rows and columns for matrix : ");
     	 scanf("%d %d", &m,&n);
     	 accept(sparse_matrix,m,n);
-    	 
+    	 printf("Enter compact form matrix 1: ");
+    	 accept(A,7,3);
+    	 printf("Enter compact form matrix 2: ");
+    	 accept(B,7,3);
     	 int ch;
     	 while(1){
     	 
@@ -172,7 +279,9 @@ int main(){
     	 printf("2 to display compact form of sparse matrix\n");
     	 printf("3 to display transpose using simple transpose\n");
     	 printf("4 to display transpose using fast transpose\n");
-    	 printf("5 to exit\n");
+    	 printf("5 to add\n");
+    	 printf("6 to subtraction\n");
+    	 printf("7 to exit\n");
     	 printf("Enter the operation to be performed\n");
     	 scanf("%d",&ch);
     	 printf("\n");
@@ -191,6 +300,12 @@ int main(){
     	 			fast_transpose(compact_matrix,fast_transposed_matrix);
     	 			break;
     	 		case 5:
+    	 		    compact_addition(A,B,sum);
+    	 		    break;
+    	 		case 6:
+    	 		    compact_subtraction(A,B,difference);
+    	 		    break;
+    	 		case 7:
     	 			return 0;
     	 			break;
     	 		}

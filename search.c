@@ -135,15 +135,66 @@ void recursive_binary_search(struct students database[10], int n, int low,int hi
 			
 			
 	        }
-		
-	
-	
+
+}
+
+void selection_sort(struct students database[10], int n){
+    int minpos;
+    for(int i=0;i<(n-1);i++){
+        minpos=i;
+        for(int j=(i+1);j<n;j++){
+            if(database[j].percentage<database[minpos].percentage){
+                minpos=j;
+            }
+        }
+        if(minpos!=i){
+            struct students temp=database[i];
+            database[i]=database[minpos];
+            database[minpos]=temp;
+        }
+        
+    }
+    display(database,n);
+}
+
+
+void insertion_sort(struct students database[10], int n){
+    struct students key;
+    for(int i=1;i<n;i++){
+        key=database[i];
+        int j=i-1;
+        while(j>=0 && database[j].percentage>key.percentage){
+            database[j+1]=database[j];
+            j=j-1;
+        }
+        database[j+1]=key;
+    }
+    display(database,n);
+}
+
+
+void shell_sort(struct students database[10], int n){
+    int gap=n/2;
+    int swapped;
+    do{
+        do{
+            swapped=0;
+            for(int i=0;i<n-gap;i++){
+                if(database[i].percentage>database[i+gap].percentage){
+                    struct students temp=database[i];
+                    database[i]=database[i+gap];
+                    database[i+gap]=temp;
+                    swapped=1;
+                }
+            }
+            
+        }while(swapped==1);
+        gap=gap/2;
+    }while(gap>=1);
+   
+    display(database,n);
 }
 	
-		
-		
-			
-		
 
 int main(){
 		
@@ -163,7 +214,10 @@ int main(){
 			printf("1 for Linear Search\n");
 			printf("2 for Normal Binary Search\n");
 			printf("3 for Recursive Binary Search\n");
-			printf("4 for Exit\n");
+			printf("4 for Selection Sort\n");
+			printf("5 for Insertion Sort\n");
+			printf("6 for Shell Sort\n");
+			printf("7 for Exit\n");
 			printf("Enter your choice: ");
 			scanf("%d",&ch);
 			
@@ -180,12 +234,24 @@ int main(){
 					binary_search(s,no_of_students,key);
 					break;
 				case 3:
-				printf("Enter key/roll number to be searched: ");
+				    printf("Enter key/roll number to be searched: ");
 					scanf("%d", &key);
 					recursive_binary_search(s,no_of_students,0,no_of_students-1,key);
 					break;
-					
 				case 4:
+				    printf("Executing Selection Sort: \n");
+				    selection_sort(s,no_of_students);
+				    break;
+				case 5:
+				    printf("Executing Insertion Sort: \n");
+				    insertion_sort(s,no_of_students);
+				    break;
+				case 6:
+				    printf("Executing Shell Sort: \n");
+				    shell_sort(s,no_of_students);
+				    break;
+				
+				case 7:
 					return 0;
 			}
 		}
